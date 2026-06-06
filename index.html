@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>EMDR</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilateral Sound Therapy</title>
+    <style>
+        body { background-color: #0d0e11; color: #b0b3b8; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
+        .card { background-color: #16181d; padding: 30px; border-radius: 20px; width: 100%; max-width: 400px; border: 1px solid #2a2d34; box-sizing: border-box; }
+        h2 { color: #ffffff; text-align: center; margin-top: 0; }
+        label { display: block; font-size: 0.8rem; text-transform: uppercase; margin: 20px 0 8px 0; color: #888; }
+        input, select, button, .intensity-box { width: 100%; box-sizing: border-box; }
+        input, select { padding: 15px; border-radius: 12px; border: none; background-color: #0d0e11; color: #ffffff; margin-bottom: 10px; }
+        button { padding: 15px; border-radius: 12px; border: none; background-color: #ffffff; color: #000; font-weight: bold; cursor: pointer; margin-top: 25px; border: 1px solid #333; }
+        .intensity-box { background: #0d0e11; padding: 15px; border-radius: 12px; margin-top: 10px; }
+        .track { width: 100%; height: 60px; background: #000; border-radius: 12px; position: relative; margin: 20px 0; display: flex; align-items: center; }
+#ball { 
+    width: 45px; 
+    height: 45px; 
+    background-color: #c9a7ff;
+    border-radius: 50%; 
+    position: absolute;
+}
+        .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        #speedSlider { margin-top: 15px; padding: 10px; border: 1px dashed #444; border-radius: 12px; }
+        .hidden { display: none !important; }
+        .screen { text-align: center; }
+        #vaultContent { background: #0d0e11; border-radius: 12px; padding: 15px; margin-top: 10px; max-height: 300px; overflow-y: auto; border: 1px solid #2a2d34; }
+        .vault-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding: 15px 0; border-top: 1px solid #2a2d34; margin-top: 20px;}
+        .history-card { background: #16181d; border-radius: 10px; padding: 12px; margin-bottom: 10px; border: 1px solid #2a2d34; display: flex; justify-content: space-between; align-items: center; }
+        .history-info { display: flex; flex-direction: column; }
+        .history-focus { color: #fff; font-size: 0.9rem; font-weight: bold; }
+        .history-meta { font-size: 0.75rem; color: #666; margin-top: 4px; }
+        .history-shift { background: #0d0e11; padding: 5px 10px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; color: #c9a7ff; }
+        .clear-btn { background: transparent; color: #ff4d4d; border: 1px solid #ff4d4d; padding: 8px; font-size: 0.75rem; width: 100%; margin-top: 15px; cursor: pointer; border-radius: 8px; }
+        @keyframes moveBall { 0% { left: 5%; } 50% { left: 85%; } 100% { left: 5%; } }
+
+#move h2 { margin-bottom: 50px; }
+#move .track { margin-top: 40px; }
+
+@keyframes breathe { 
+    0% { transform: scale(1); } 
+    25% { transform: scale(1.5); } 
+    50% { transform: scale(1.5); }
+    75% { transform: scale(1); }
+    100% { transform: scale(1); }
+}
+    </style>
+</head>
+<body>
+
+    <div id="home" class="card screen">
+        <h2>Bilateral Sound Therapy</h2>
+        <label>Focus Area</label>
+        <input type="text" id="focusInput" placeholder="What is present for you today?">
+        <label>Somatic Location</label>
+<select id="somaticLocation" style="text-align: center;">
+    <option>---</option>
+    <option>Head / Jaw</option><option>Throat / Neck</option><option>Chest / Heart space</option>
+    <option>Stomach / Gut</option><option>Limbs / Extremities</option><option>Full Body / Other</option>
+</select>
+<div class="intensity-box">
+    <div id="intensityLabel" style="font-size: 0.95rem; color: #fff; margin-bottom: 10px;">Current Emotional Intensity (5)</div>
+    <input type="range" id="intensityRange" min="1" max="10" value="5" style="width: 100%; margin-bottom: 8px;">
+    <div style="display: flex; justify-content: space-between; font-size: 0.75m; color: #888;">
+        <span>Calm</span>
+        <span>Overwhelm</span>
+    </div>
+</div>
+<div style="text-align: center; margin: 20px 0;">
+    <label>Number of Sets</label>
+    <input type="number" id="sets" value="5" style="width: 80px; text-align: center; font-size: 1.2rem; font-weight: bold; -webkit-appearance: none; -moz-appearance: textfield;">
+</div>
+        <button id="startBtn">Begin Processing</button>
+        
+        <div class="vault-header" id="vaultToggle">
+            <span style="font-weight:bold; color:#fff; letter-spacing: 1px;">SESSION VAULT</span>
+            <span id="vaultArrow">▼</span>
+        </div>
+        <div id="vaultContent" class="hidden">
+            <div id="historyList"></div>
+            <button id="clearVaultBtn" class="clear-btn">Clear All Sessions</button>
+        </div>
+    </div>
+
+    <div id="move" class="card screen hidden">
+        <h2 id="processTitle">PROCESSING</h2>
+<button id="exitBtn" style="position: absolute; top: 15px; right: 15px; background: transparent; border: none; color: #ff4d4d; font-size: 24px; cursor: pointer; padding: 0; width: auto;">✕</button>
+        <div class="track"><div id="ball"></div></div>
+        <div class="btn-row">
+            <button id="pauseBtn" style="color:#fff; background:transparent;">Pause (5s)</button>
+            <button id="speedToggle" style="color:#fff; background:transparent;">Speed</button>
+        </div>
+        <div id="speedSlider" class="hidden">
+            <input type="range" id="speedRange" min="1.5" max="3" step="0.05" value="2.5">
+            <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:#888; margin-top:5px;"><span>SLOW</span><span>FAST</span></div>
+        </div>
+    </div>
+
+<div id="break" class="card screen hidden" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; padding: 60px 30px;">
+<h2 style="margin-bottom: 100px; opacity: 0.7;">Recovery Breath</h2>
+    <div id="breathBall" style="width: 140px; height: 140px; background: radial-gradient(circle at 35% 35%, #e8d5ff, #c9a7ff); border-radius: 50%; box-shadow: 0 0 40px #c9a7ff, 0 0 80px rgba(201, 167, 255, 0.3); animation: breathe 16s infinite; margin-bottom: 60px;"></div>
+    <div id="breathText" style="font-size: 1.5rem; color: #c9a7ff; font-weight: 600; letter-spacing: 3px; margin-bottom: 40px; text-transform: uppercase;">INHALE</div>
+<button id="goBtn" style="position: absolute; bottom: 40px; padding: 12px 30px; background: #c9a7ff; color: #000; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: auto;">Next Set</button>
+</div>
+
+<div id="reflection" class="card screen hidden"><h2>Integration</h2><input type="text" id="reflectionInput" placeholder="I am enough..."><button id="reflectBtn">Begin Final Sets</button></div>
+    <div id="finish" class="card screen hidden"><h2>Session Complete</h2><div class="intensity-box"><div id="finalIntensityLabel" style="font-size: 0.8rem; color: #fff; margin-bottom: 10px;">Final Emotional Intensity (5)</div><input type="range" id="finalIntensityRange" min="1" max="10" value="5"></div><button id="saveBtn">Save Session & Home</button></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+let totalSets, currentSet = 0, isPaused = false, audioCtx, soundInterval, setTimer, countdownTimer, remainingTime = 5, isLeftEar = true;
+            let isReflecting = false, reflectionSetsDone = 0;
+            let sessionData = { startIntensity: 5, focus: "" };
+            const ball = document.getElementById('ball'), speedRange = document.getElementById('speedRange'), pauseBtn = document.getElementById('pauseBtn'), processTitle = document.getElementById('processTitle');
+
+setInterval(() => {
+    if (document.getElementById('break').classList.contains('hidden')) return;
+    const breathText = document.getElementById('breathText');
+    const elapsed = (Date.now() / 1000) % 16;
+    if (elapsed < 4) breathText.innerText = 'INHALE';
+    else if (elapsed < 8) breathText.innerText = 'HOLD';
+    else if (elapsed < 12) breathText.innerText = 'EXHALE';
+    else breathText.innerText = 'HOLD';
+}, 100);
+            function updateVault() {
+                const history = JSON.parse(localStorage.getItem('therapyHistory') || '[]');
+                const list = document.getElementById('historyList');
+                list.innerHTML = history.length ? history.map(s => `
+                    <div class="history-card">
+                        <div class="history-info">
+                            <span class="history-focus">${s.focus}</span>
+                            <span class="history-meta">${s.date}</span>
+                        </div>
+                        <div class="history-shift">${s.start} → ${s.end}</div>
+                    </div>
+                `).join('') : '<div style="padding:15px; color:#555; text-align:center;">No sessions recorded yet.</div>';
+            }
+
+            function resetToHome() {
+                document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+                document.getElementById('home').classList.remove('hidden');
+                currentSet = 0; reflectionSetsDone = 0; isReflecting = false;
+                clearInterval(soundInterval); clearTimeout(setTimer); clearInterval(countdownTimer);
+                updateVault();
+            }
+
+function playTone(isLeft = true) {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    
+    const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
+    const panner = audioCtx.createStereoPanner();
+    
+    osc.connect(gain); 
+    gain.connect(panner); 
+    panner.connect(audioCtx.destination);
+    panner.pan.setValueAtTime(isLeft ? -1 : 1, audioCtx.currentTime);
+    
+    osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.3);
+    
+    osc.start(audioCtx.currentTime);
+    osc.stop(audioCtx.currentTime + 0.3);
+}
+
+function updateSpeed() {
+    let speedVal = parseFloat(speedRange.value), duration = Math.max(0.8, 3.5 - speedVal);
+    
+if (ball.style.animationDuration !== `${duration}s`) {
+        ball.style.animation = 'none'; 
+        void ball.offsetWidth;
+        ball.style.animation = `moveBall ${duration}s linear infinite`;
+    }
+    
+    ball.style.animationPlayState = isPaused ? 'paused' : 'running';
+    clearInterval(soundInterval);
+    if (!isPaused) { 
+        // Play RIGHT ear immediately (ball moving right initially)
+        playTone(false);
+        isLeftEar = false;
+        
+        // Alternate ears every wall hit: LEFT, RIGHT, LEFT, RIGHT...
+        soundInterval = setInterval(() => {
+            isLeftEar = !isLeftEar;
+            playTone(isLeftEar);
+        }, (duration / 2) * 1000);
+    }
+}
+function runSet() {
+    remainingTime = 25; pauseBtn.innerText = `Pause (25s)`;
+    processTitle.innerText = isReflecting ? "INSTALLATION" : "PROCESSING";
+    if (isReflecting && reflectionSetsDone === 0) speedRange.value = 1.8;
+    document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+    document.getElementById('move').classList.remove('hidden');
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    updateSpeed();
+    
+    let elapsedTime = 0;
+    countdownTimer = setInterval(() => { 
+        if (!isPaused) {
+            elapsedTime++;
+            remainingTime--;
+            pauseBtn.innerText = `Pause (${remainingTime}s)`;
+if (elapsedTime >= 25) {
+    clearInterval(soundInterval); 
+    clearInterval(countdownTimer); 
+    ball.style.animation = 'none';
+    clearInterval(setTimer);
+    document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+    
+    if (!isReflecting) {
+        currentSet++;
+        if (currentSet < totalSets) {
+           document.getElementById('break').classList.remove('hidden');
+        }
+        else document.getElementById('reflection').classList.remove('hidden');
+    } else {
+        reflectionSetsDone++;
+        if (reflectionSetsDone < 2) document.getElementById('break').classList.remove('hidden');
+        else document.getElementById('finish').classList.remove('hidden');
+    }
+            }
+        }
+    }, 1000);
+}
+
+            document.getElementById('startBtn').addEventListener('click', () => {sessionData.startIntensity = document.getElementById('intensityRange').value; sessionData.focus = document.getElementById('focusInput').value || "No focus"; totalSets = parseInt(document.getElementById('sets').value) || 5; runSet(); });
+            document.getElementById('reflectBtn').addEventListener('click', () => { isReflecting = true; reflectionSetsDone = 0; runSet(); });
+            document.getElementById('saveBtn').addEventListener('click', () => {
+                let history = JSON.parse(localStorage.getItem('therapyHistory') || '[]');
+                history.unshift({ focus: sessionData.focus, start: sessionData.startIntensity, end: document.getElementById('finalIntensityRange').value, date: new Date().toLocaleDateString() });
+                if(history.length > 50) history = history.slice(0, 50);
+                localStorage.setItem('therapyHistory', JSON.stringify(history));
+                resetToHome();
+            });
+            document.getElementById('vaultToggle').addEventListener('click', () => { document.getElementById('vaultContent').classList.toggle('hidden'); document.getElementById('vaultArrow').innerText = document.getElementById('vaultContent').classList.contains('hidden') ? '▼' : '▲'; });
+            document.getElementById('clearVaultBtn').addEventListener('click', () => { localStorage.removeItem('therapyHistory'); updateVault(); });
+document.getElementById('pauseBtn').addEventListener('click', () => { 
+    isPaused = !isPaused; 
+    updateSpeed();
+    pauseBtn.innerText = isPaused ? "Resume" : `Pause (${remainingTime}s)`; 
+});
+            document.getElementById('speedToggle').addEventListener('click', () => document.getElementById('speedSlider').classList.toggle('hidden'));
+            document.getElementById('goBtn').addEventListener('click', runSet);
+            speedRange.addEventListener('input', updateSpeed);
+            document.getElementById('intensityRange').addEventListener('input', (e) => document.getElementById('intensityLabel').innerText = `Current Emotional Intensity (${e.target.value})`);
+
+document.getElementById('exitBtn').addEventListener('click', resetToHome);
+            document.getElementById('finalIntensityRange').addEventListener('input', (e) => document.getElementById('finalIntensityLabel').innerText = `Final Emotional Intensity (${e.target.value})`);
+            updateVault();
+        });
+    </script>
+</body>
+</html>
+    
+  </body>
+  
+</html>
