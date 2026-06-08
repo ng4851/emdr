@@ -1,16 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>EMDR</title>
-    
-
-  </head>
-    
-  <body>
-  <!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -108,11 +97,10 @@
         </div>
     </div>
 
-<div id="break" class="card screen hidden" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; padding: 60px 30px;">
-<h2 style="margin-bottom: 100px; opacity: 0.7;">Recovery Breath</h2>
-    <div id="breathBall" style="width: 140px; height: 140px; background: radial-gradient(circle at 35% 35%, #e8d5ff, #c9a7ff); border-radius: 50%; box-shadow: 0 0 40px #c9a7ff, 0 0 80px rgba(201, 167, 255, 0.3); animation: breathe 16s infinite; margin-bottom: 60px;"></div>
-    <div id="breathText" style="font-size: 1.5rem; color: #c9a7ff; font-weight: 600; letter-spacing: 3px; margin-bottom: 40px; text-transform: uppercase;">INHALE</div>
-<button id="goBtn" style="position: absolute; bottom: 40px; padding: 12px 30px; background: #c9a7ff; color: #000; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: auto;">Next Set</button>
+<div id="break" class="card screen hidden" style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; padding: 60px 30px;">
+    <h2 style="margin-bottom: 40px; font-size: 2rem; line-height: 1.4;">Take a moment to integrate</h2>
+    <p style="font-size: 1.1rem; color: #c9a7ff; margin-bottom: 60px; line-height: 1.8;">Notice what's shifted. What feelings or sensations are present now?</p>
+    <button id="goBtn" style="padding: 12px 30px; background: #c9a7ff; color: #000; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: auto;">Next Set</button>
 </div>
 
 <div id="reflection" class="card screen hidden"><h2>Integration</h2><input type="text" id="reflectionInput" placeholder="I am enough..."><button id="reflectBtn">Begin Final Sets</button></div>
@@ -169,8 +157,8 @@ function playTone(isLeft = true) {
     panner.pan.setValueAtTime(isLeft ? -1 : 1, audioCtx.currentTime);
     
     osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.3);
+    gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.25);
     
     osc.start(audioCtx.currentTime);
     osc.stop(audioCtx.currentTime + 0.3);
@@ -188,16 +176,13 @@ if (ball.style.animationDuration !== `${duration}s`) {
     ball.style.animationPlayState = isPaused ? 'paused' : 'running';
     clearInterval(soundInterval);
     if (!isPaused) { 
-        // Play RIGHT ear immediately (ball moving right initially)
-        playTone(false);
-        isLeftEar = false;
-        
-        // Alternate ears every wall hit: LEFT, RIGHT, LEFT, RIGHT...
+        // Only set up interval, don't play immediately
         soundInterval = setInterval(() => {
             isLeftEar = !isLeftEar;
             playTone(isLeftEar);
         }, (duration / 2) * 1000);
-    }
+
+}
 }
 function runSet() {
     remainingTime = 25; pauseBtn.innerText = `Pause (25s)`;
@@ -265,8 +250,4 @@ document.getElementById('exitBtn').addEventListener('click', resetToHome);
         });
     </script>
 </body>
-</html>
-    
-  </body>
-  
 </html>
