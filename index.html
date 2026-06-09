@@ -38,13 +38,6 @@
 #move h2 { margin-bottom: 50px; }
 #move .track { margin-top: 40px; }
 
-@keyframes breathe { 
-    0% { transform: scale(1); } 
-    25% { transform: scale(1.5); } 
-    50% { transform: scale(1.5); }
-    75% { transform: scale(1); }
-    100% { transform: scale(1); }
-}
     </style>
 </head>
 <body>
@@ -113,15 +106,7 @@ let totalSets, currentSet = 0, isPaused = false, audioCtx, soundInterval, setTim
             let sessionData = { startIntensity: 5, focus: "" };
             const ball = document.getElementById('ball'), speedRange = document.getElementById('speedRange'), pauseBtn = document.getElementById('pauseBtn'), processTitle = document.getElementById('processTitle');
 
-setInterval(() => {
-    if (document.getElementById('break').classList.contains('hidden')) return;
-    const breathText = document.getElementById('breathText');
-    const elapsed = (Date.now() / 1000) % 16;
-    if (elapsed < 4) breathText.innerText = 'INHALE';
-    else if (elapsed < 8) breathText.innerText = 'HOLD';
-    else if (elapsed < 12) breathText.innerText = 'EXHALE';
-    else breathText.innerText = 'HOLD';
-}, 100);
+
             function updateVault() {
                 const history = JSON.parse(localStorage.getItem('therapyHistory') || '[]');
                 const list = document.getElementById('historyList');
@@ -185,7 +170,7 @@ if (ball.style.animationDuration !== `${duration}s`) {
 }
 }
 function runSet() {
-    remainingTime = 25; pauseBtn.innerText = `Pause (25s)`;
+    remainingTime = 45; pauseBtn.innerText = `Pause (45s)`;
     processTitle.innerText = isReflecting ? "INSTALLATION" : "PROCESSING";
     if (isReflecting && reflectionSetsDone === 0) speedRange.value = 1.8;
     document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
@@ -200,7 +185,7 @@ function runSet() {
             elapsedTime++;
             remainingTime--;
             pauseBtn.innerText = `Pause (${remainingTime}s)`;
-if (elapsedTime >= 25) {
+if (elapsedTime >= 45) {
     clearInterval(soundInterval); 
     clearInterval(countdownTimer); 
     ball.style.animation = 'none';
